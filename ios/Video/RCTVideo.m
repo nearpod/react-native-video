@@ -155,13 +155,15 @@ static int const RCTVideoUnset = -1;
 
 - (CMTime)playerItemDuration
 {
-  AVPlayerItem *playerItem = [_player currentItem];
-  if (playerItem.status == AVPlayerItemStatusReadyToPlay)
-  {
-    return([playerItem duration]);
-  }
-  
-  return(kCMTimeInvalid);
+    AVPlayerItem *playerItem = [_player currentItem];
+    if (playerItem.status == AVPlayerItemStatusReadyToPlay)
+    {
+        AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:_videoURL options:[NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithBool:YES], AVURLAssetPreferPreciseDurationAndTimingKey, nil]];
+        float duration = CMTimeGetSeconds(asset.duration);
+        return(asset.duration);
+    }
+    
+    return(kCMTimeInvalid);
 }
 
 - (CMTimeRange)playerItemSeekableTimeRange
@@ -626,8 +628,9 @@ static int const RCTVideoUnset = -1;
     if ([keyPath isEqualToString:statusKeyPath]) {
       // Handle player item status change.
       if (_playerItem.status == AVPlayerItemStatusReadyToPlay) {
-        float duration = CMTimeGetSeconds(_playerItem.asset.duration);
-        
+          AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:_videoURL options:[NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithBool:YES], AVURLAssetPreferPreciseDurationAndTimingKey, nil]];
+          float duration = CMTimeGetSeconds(asset.duration);
+          
         if (isnan(duration)) {
           duration = 0.0;
         }
