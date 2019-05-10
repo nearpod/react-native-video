@@ -485,7 +485,8 @@ static int const RCTVideoUnset = -1;
   NSURL *url = isNetwork || isAsset
     ? [NSURL URLWithString:uri]
     : [[NSURL alloc] initFileURLWithPath:[[NSBundle mainBundle] pathForResource:uri ofType:type]];
-  NSMutableDictionary *assetOptions = [[NSMutableDictionary alloc] init];
+    _videoURL = url;
+    NSMutableDictionary *assetOptions = [[NSMutableDictionary alloc] init];
   
   if (isNetwork) {
     /* Per #1091, this is not a public API.
