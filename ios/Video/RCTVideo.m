@@ -515,7 +515,8 @@ static int const RCTVideoUnset = -1;
     [self playerItemPrepareText:asset assetOptions:assetOptions withCallback:handler];
     return;
   } else if (isAsset) {
-    AVURLAsset *asset = [AVURLAsset URLAssetWithURL:url options:nil];
+    NSDictionary * options = @{AVURLAssetPreferPreciseDurationAndTimingKey: @YES};
+    AVURLAsset *asset = [AVURLAsset URLAssetWithURL:url options:options];
     [self playerItemPrepareText:asset assetOptions:assetOptions withCallback:handler];
     return;
   }
